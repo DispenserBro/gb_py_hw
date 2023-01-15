@@ -17,7 +17,7 @@ def print_field(field: list) -> None:
             print('___________')
 
 
-def check_cell(pos: int, field: list) -> bool:
+def check_cell(pos: int, field: list, is_player: bool = True) -> bool:
     """Функция для проверки доступности клетки.
 
         Args:
@@ -33,7 +33,9 @@ def check_cell(pos: int, field: list) -> bool:
         if field[pos_y][pos_x] == pos:
             return True
 
-    print('Кленка занята или находится вне диапазона [1-9]')
+    if is_player:
+        print('Кленка занята или находится вне диапазона [1-9]')
+
     return False
 
 
@@ -124,6 +126,18 @@ def init_game() -> None:
 
         if check_win(field, 'X'):
             print('Выиграли крестики!!!!')
+
+            run_game, msg = restart_game()
+
+            print(msg)
+
+            if run_game:
+                _, field = new_game()
+
+            continue
+
+        if not any(check_cell(cell, field, is_player=False) for cell in range(1,10)):
+            print('Ничья!!!!')
 
             run_game, msg = restart_game()
 
